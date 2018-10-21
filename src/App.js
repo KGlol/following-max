@@ -68,37 +68,44 @@ class App extends Component {
         
   render() {
 
-    const style = {
-      color: 'white',
-      backgroundColor: 'green',
-      border: '1px solid transparent',
-      boxShadow: '0 1px 4px black',
-      outline: 'none',
-      font: 'inherit',
-      cursor: 'pointer',
+    // const style = {
+    //   color: 'white',
+    //   backgroundColor: 'green',
+    //   border: '1px solid transparent',
+    //   boxShadow: '0 1px 4px black',
+    //   outline: 'none',
+    //   font: 'inherit',
+    //   cursor: 'pointer',
       // ':hover': {
         // backgroundColor: 'yellow',
         // color: 'black'
       // }
-    }
+    //}
 
     let person = null;
 
-    if ( this.state.showPerson ) {
-      person =  ( 
-      <div>
-      {this.state.person.map( (eachPerson, index) => {
-        //<div>套在这个位置就不行？？？
-       return <Person 
-       //return 后面要跟东西 直接换行会报错！！！
-            name={eachPerson.name} 
-            age={eachPerson.age}
-            click={() => this.deletePersonHander(index)} 
-            key={eachPerson.id} />
-          } )} 
-      </div>);
+    let btnClass = '';
 
-      style.backgroundColor= 'grey';
+    if ( this.state.showPerson ) {
+
+      btnClass = classes.Red; //classes.Red也是字符串
+
+      person =  ( 
+        <div>
+        {this.state.person.map( (eachPerson, index) => {
+          //<div>套在这个位置就不行？？？
+        return <Person 
+        //return 后面要跟东西 直接换行会报错！！！
+              name={eachPerson.name} 
+              age={eachPerson.age}
+              click={() => this.deletePersonHander(index)} 
+              key={eachPerson.id} />
+            } )} 
+        </div>);
+
+
+
+      // style.backgroundColor= 'grey';
       // style[':hover'] = {
       //   backgroundColor: 'salmon',
       //   color: 'white'
@@ -106,11 +113,17 @@ class App extends Component {
     }
 
     const assignedClasses = [];
+
     if(this.state.person.length <= 2) assignedClasses.push(classes.red);
     if(this.state.person.length <= 1) assignedClasses.push(classes.bold);//使用cssmodule时，return以前的样式变量不加大括号。
+    
     return (
         <div className={classes.App}>
           <h1 className={assignedClasses.join(' ')}>This is an h1</h1>
+          <button
+            className={btnClass} 
+            onClick={this.toggleShowHander} 
+            >switch name</button>
           {person}
             {/* {this.state.showPerson ?  
             <div>
@@ -131,7 +144,6 @@ class App extends Component {
             </div>  : null}  */}
 
             
-          <button onClick={this.toggleShowHander} style={style}>switch name</button>
           
         </div>
     )
