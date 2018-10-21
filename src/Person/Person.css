@@ -1,0 +1,9 @@
+.person {
+  width: 70%;
+  background-color: salmon;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  /* box-shadow: 0 3px 5px black; */
+  padding: 10px;
+  margin: 10px auto;
+}
