@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Person from './Person/Person';
-import './App.css';
+import classes from './App.css'; //使用css module,动态的更改元素样式名
 // import Radium, { StyleRoot } from 'radium';
 
 class App extends Component {
@@ -105,12 +105,12 @@ class App extends Component {
       // };
     }
 
-    const classes = [];
-    if(this.state.person.length <= 2) classes.push('red');
-    if(this.state.person.length <= 1) classes.push('bold');
+    const assignedClasses = [];
+    if(this.state.person.length <= 2) assignedClasses.push(classes.red);
+    if(this.state.person.length <= 1) assignedClasses.push(classes.bold);//使用cssmodule时，return以前的样式变量不加大括号。
     return (
-        <div className="App">
-          <h1 className={classes.join(' ')}>This is an h1</h1>
+        <div className={classes.App}>
+          <h1 className={assignedClasses.join(' ')}>This is an h1</h1>
           {person}
             {/* {this.state.showPerson ?  
             <div>
