@@ -2,7 +2,7 @@ import React from 'react';
 // import Radium from 'radium';
 import classes from './Person.css';
 
-const Person = ( props ) => {
+const person = ( props ) => {
   // const style = {
   //   '@media (min-width: 500px)': { width: '450px' },
   //   // backgroundColor: 'red',
@@ -17,4 +17,4 @@ const Person = ( props ) => {
   );
   }
 
-export default Person;
+export default person;

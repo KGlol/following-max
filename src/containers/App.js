@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Person from '../components/Persons/Person/Person';
+import Persons from '../components/Persons/Persons';
 import classes from './App.css'; //使用css module,动态的更改元素样式名
 // import Radium, { StyleRoot } from 'radium';
 
@@ -82,7 +82,7 @@ class App extends Component {
       // }
     //}
 
-    let person = null;
+    let person;
 
     let btnClass = '';
 
@@ -90,18 +90,12 @@ class App extends Component {
 
       btnClass = classes.Red; //classes.Red也是字符串
 
-      person =  ( 
-        <div>
-        {this.state.person.map( (eachPerson, index) => {
-          //<div>套在这个位置就不行？？？
-        return <Person 
-        //return 后面要跟东西 直接换行会报错！！！
-              name={eachPerson.name} 
-              age={eachPerson.age}
-              click={() => this.deletePersonHander(index)} 
-              key={eachPerson.id} />
-            } )} 
-        </div>);
+       person =  ( 
+          <div>
+            <Persons 
+              person={this.state.person} 
+              delete={this.deletePersonHander} />
+          </div>);
 
 
 
@@ -124,7 +118,7 @@ class App extends Component {
             className={btnClass} 
             onClick={this.toggleShowHander} 
             >switch name</button>
-          {person}
+            {person}
             {/* {this.state.showPerson ?  
             <div>
               <Person 
@@ -142,9 +136,6 @@ class App extends Component {
                 age={this.state.person[2].age}
                 change={this.nameChangeHander} >component Person's children.</Person> 
             </div>  : null}  */}
-
-            
-          
         </div>
     )
   }
