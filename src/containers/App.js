@@ -1,21 +1,54 @@
 import React, { Component } from 'react';
 import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit';
 import classes from './App.css'; //使用css module,动态的更改元素样式名
 // import Radium, { StyleRoot } from 'radium';
 
-class App extends Component {
-      //组件的state
-      state = {
-        person: [
-          { id: 'id1', name: 'kg', age: 12 },
-          { id: 'id2', name: 'df', age: 111 },
-          { id: 'id3', name: 'sdsd', age: 23 }
-        ],
+class App extends Component {//extends Component 使得App具有props和state
+  constructor ( props ) {
+    super ( props );
+    this.state = {
+      person: [
+        { id: 'id1', name: 'kg', age: 12 },
+        { id: 'id2', name: 'df', age: 111 },
+        { id: 'id3', name: 'sdsd', age: 23 }
+      ],
+      
+      anotherState: 'something else',
+      showPerson: false
+    };
+    console.log ( '[App.js] inside constructor', props );//this.props或props都可以
+  };
+  
+  //组件的state
+      // state = {
+      //   person: [
+      //     { id: 'id1', name: 'kg', age: 12 },
+      //     { id: 'id2', name: 'df', age: 111 },
+      //     { id: 'id3', name: 'sdsd', age: 23 }
+      //   ],
         
-        anotherState: 'something else',
-        showPerson: false
-      }
+      //   anotherState: 'something else',
+      //   showPerson: false
+      // }
+  componentWillMount () {
+    console.log ( '[App.js] inside componentWillMount' );
+  };
+  componentDidMount () {
+    console.log ( '[App.js] inside componentDidMount' );
+  };
 
+  //Updated by internal changes ( state )
+  shouldComponentUpdate ( nextProps, nextState ) {
+    console.log ( '[Update App.js] inside shouldComponentUpdate', nextProps, nextState );
+    return true; //不返回时 控制台显示返回一个undefine
+  }
+  componentWillUpdate ( nextProps, nextState ) {
+    console.log ( '[Update App.js] inside componentWillUpdate', nextProps, nextState );
+  }
+  componentDidUpdate () {
+    console.log ( '[Update App.js] inside componentDidUpdate' );
+  }
   
       // 组件函数
         switchNumberHander = ( name, age ) => { //函数中的参数
@@ -67,7 +100,7 @@ class App extends Component {
         }
         
   render() {
-
+    console.log ( '[App.js] inside render()' );
     // const style = {
     //   color: 'white',
     //   backgroundColor: 'green',
@@ -94,7 +127,8 @@ class App extends Component {
           <div>
             <Persons 
               person={this.state.person} 
-              delete={this.deletePersonHander} />
+              delete={this.deletePersonHander} 
+            />
           </div>);
 
 
@@ -113,12 +147,18 @@ class App extends Component {
     
     return (
         <div className={classes.App}>
-          <h1 className={assignedClasses.join(' ')}>This is an h1</h1>
+          {this.props.title }
+          <Cockpit 
+            assignedClasses={assignedClasses.join(' ')}//render以内的变量不必再用this.
+            btnClass={btnClass} //render以内的变量不必再用this.
+            click={this.toggleShowHander}
+          />
+          {/* <h1 className={assignedClasses.join(' ')}>This is an h1</h1>
           <button
             className={btnClass} 
             onClick={this.toggleShowHander} 
-            >switch name</button>
-            {person}
+            >switch name</button> */}
+            { person }
             {/* {this.state.showPerson ?  
             <div>
               <Person 
