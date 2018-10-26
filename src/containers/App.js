@@ -1,10 +1,15 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 import classes from './App.css'; //使用css module,动态的更改元素样式名
+import Aux from '../hocs/Aux';
+import withClass from '../hocs/withClass';
+//withClass并不是一个组件,而是返回高阶组件的函数
+
+
 // import Radium, { StyleRoot } from 'radium';
 
-class App extends Component {//extends Component 使得App具有props和state
+class App extends PureComponent {//extends Component 使得App具有props和state
   constructor ( props ) {
     super ( props );
     this.state = {
@@ -15,7 +20,8 @@ class App extends Component {//extends Component 使得App具有props和state
       ],
       
       anotherState: 'something else',
-      showPerson: false
+      showPerson: false,
+      toggleBtnCouter: 0
     };
     console.log ( '[App.js] inside constructor', props );//this.props或props都可以
   };
@@ -39,10 +45,12 @@ class App extends Component {//extends Component 使得App具有props和state
   };
 
   //Updated by internal changes ( state )
-  shouldComponentUpdate ( nextProps, nextState ) {
-    console.log ( '[Update App.js] inside shouldComponentUpdate', nextProps, nextState );
-    return true; //不返回时 控制台显示返回一个undefine
-  }
+  // shouldComponentUpdate ( nextProps, nextState ) {
+  //   console.log ( '[Update App.js] inside shouldComponentUpdate', nextProps, nextState );
+  //   return this.state.person !== nextState.person || //不返回时 控制台显示返回一个undefine
+  //         this.state.showPerson !== nextState.showPerson;
+  // }
+
   componentWillUpdate ( nextProps, nextState ) {
     console.log ( '[Update App.js] inside componentWillUpdate', nextProps, nextState );
   }
@@ -82,7 +90,15 @@ class App extends Component {//extends Component 使得App具有props和state
             * this.setState({showPerson: !showPerson});
             */
            const showAbout = this.state.showPerson;
-           this.setState( {showPerson: !showAbout} );
+           this.setState( ( prevState, props ) => { 
+              return {
+                showPerson: !showAbout,
+                toggleBtnCouter: prevState.toggleBtnCouter + 1
+                  //  toggleBtnCouter: this.state.toggleBtnCouter + 1 this.setState是异步更新,这种写法有问题
+                  //可以向showPerson一样先copy给showAbout,更新shouAbout再给showPerson
+                  //原因: setState中的state由于异步,无法确定最新或者旧值,其他位置的setState可能此处先完成.
+              }  
+            });
         }
 
         //删除person函数
@@ -146,39 +162,42 @@ class App extends Component {//extends Component 使得App具有props和state
     if(this.state.person.length <= 1) assignedClasses.push(classes.bold);//使用cssmodule时，return以前的样式变量不加大括号。
     
     return (
-        <div className={classes.App}>
+        // <WithClass className={classes.App}>hoc 有classNme
+        <Aux>
           {this.props.title }
+          <button onClick={() => this.setState({showPerson: true})}>Show Persons</button>
           <Cockpit 
             assignedClasses={assignedClasses.join(' ')}//render以内的变量不必再用this.
             btnClass={btnClass} //render以内的变量不必再用this.
             click={this.toggleShowHander}
-          />
+            />
           {/* <h1 className={assignedClasses.join(' ')}>This is an h1</h1>
           <button
-            className={btnClass} 
-            onClick={this.toggleShowHander} 
-            >switch name</button> */}
+          className={btnClass} 
+          onClick={this.toggleShowHander} 
+        >switch name</button> */}
             { person }
             {/* {this.state.showPerson ?  
             <div>
-              <Person 
-                name={this.state.person[1].name} 
-                age={this.state.person[1].age}
-                //传参的两种方式之一使用.bind(this, ...)（推荐）
-                click={this.switchNumberHander.bind(this, '!!!!!', 100)} 
-                change={this.nameChangeHander} />
-              <Person 
-                name={this.state.person[0].name} 
-                age={this.state.person[0].age}
-                change={this.nameChangeHander} />
-              <Person 
-                name={this.state.person[2].name} //
-                age={this.state.person[2].age}
-                change={this.nameChangeHander} >component Person's children.</Person> 
-            </div>  : null}  */}
-        </div>
+            <Person 
+            name={this.state.person[1].name} 
+            age={this.state.person[1].age}
+            //传参的两种方式之一使用.bind(this, ...)（推荐）
+            click={this.switchNumberHander.bind(this, '!!!!!', 100)} 
+            change={this.nameChangeHander} />
+            <Person 
+            name={this.state.person[0].name} 
+            age={this.state.person[0].age}
+            change={this.nameChangeHander} />
+            <Person 
+            name={this.state.person[2].name} //
+            age={this.state.person[2].age}
+            change={this.nameChangeHander} >component Person's children.</Person> 
+          </div>  : null}  */}
+         {/* </WithClass> */}
+    </Aux>
     )
   }
 }
 
-export default App;
+export default withClass( App, classes.App );

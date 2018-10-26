@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 // import Radium from 'radium';
 import classes from './Person.css';
+import Aux from '../../..//hocs/Aux';
+import withClass from '../../../hocs/withClass';
+//withClass并不是一个组件,而是返回高阶组件的函数
+import PropTypes from 'prop-types';
+
+
 
 class Person extends Component {
   constructor ( props ) {
@@ -12,18 +18,19 @@ class Person extends Component {
     console.log ( '[Person.js] inside componentWillMount' );
   };
   componentDidMount () {
-    console.log ( '[Person.js] inside componentDidMount' );
+    console.log ( '[Person.js] inside componentDidMount', this.refs.inp.type );
+    
   };
 
   render () {
     console.log ( '[Person.js] inside render()' );
 
     return (
-      <div className={classes.person}>
-        <p onClick={this.props.click}>I'm {this.props.name}, and I'm {this.props.age} years old.</p>
-        <p>{this.props.children}</p>
-        <input type="text" onChange={this.props.change} />
-      </div>
+      <Aux>
+          <p onClick={this.props.click}>I'm {this.props.name}, and I'm {this.props.age} years old.</p>
+          <p>{this.props.children}</p>
+          <input ref="inp" type="text" onChange={this.props.change} />
+      </Aux>        
    );
   }
 }
@@ -44,4 +51,11 @@ class Person extends Component {
 //   );
 //   }
 
-export default Person;
+Person.propTypes = {
+  click: PropTypes.func,
+  name: PropTypes.string,
+  age: PropTypes.number,
+  change: PropTypes.func
+}
+
+export default withClass( Person, classes.person );

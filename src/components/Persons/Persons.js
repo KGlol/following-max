@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Person from './Person/Person';
 
-class Persons extends Component {
+class Persons extends PureComponent {
   constructor ( props ) {
     super ( props );
     console.log ( '[Persons.js] inside constructor', this.props );
@@ -19,11 +19,14 @@ class Persons extends Component {
   componentWillReceiveProps ( nextProps ) {
     console.log ( '[Update Persons.js] inside componentWilUpdate()', nextProps );
   }
-  shouldComponentUpdate ( nextProps, nextState ) {
-    console.log ( '[Update Persons.js] inside shouldUpdateComponent()', nextProps, nextState );
-    return this.props !== nextProps; //shouldUpdateComponent应返回布尔值决定是否更新组件
-    //contructor外要加this
-  }
+  // shouldComponentUpdate ( nextProps, nextState ) {
+  //   console.log ( '[Update Persons.js] inside shouldUpdateComponent()', nextProps, nextState );
+  //   return this.props !== nextProps || 
+  //         this.props.changed !== nextProps.changed ||
+  //         this.props.clicked !== nextProps.clicked;
+  //         //shouldUpdateComponent应返回布尔值决定是否更新组件
+  //   //contructor外要加this
+  // }
   componentDidUpdate () {
     console.log ( '[Update Persons.js] inside componentDidUpdate()' );
   }
