@@ -164,7 +164,7 @@ class App extends PureComponent {//extends Component 使得App具有props和stat
     return (
         // <WithClass className={classes.App}>hoc 有classNme
         <Aux>
-          {this.props.title }
+          {this.props.title}
           <button onClick={() => this.setState({showPerson: true})}>Show Persons</button>
           <Cockpit 
             assignedClasses={assignedClasses.join(' ')}//render以内的变量不必再用this.
@@ -176,7 +176,7 @@ class App extends PureComponent {//extends Component 使得App具有props和stat
           className={btnClass} 
           onClick={this.toggleShowHander} 
         >switch name</button> */}
-            { person }
+            {person}
             {/* {this.state.showPerson ?  
             <div>
             <Person 
